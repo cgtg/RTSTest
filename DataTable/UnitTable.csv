@@ -1,7 +1,7 @@
-﻿uint32,string,string,string,uint32,uint32,string,string
-uid,character,nameAlias,descAlias,HP,atk,prefabFileName,prefabFilePath
--,-,Name,Desc,-,-,-,Prefabs/Characters/
-1000,Cop,CopName,CopDesc,100,10,SM_Bean_Cop_01,Prefabs/Characters/SM_Bean_Cop_01
-1001,Cowboy,CowboyName,CowboyDesc,100,8,SM_Bean_Cowboy_01,Prefabs/Characters/SM_Bean_Cowboy_01
-1002,Female,FemaleName,FemaleDesc,100,7,SM_Bean_Female_01,Prefabs/Characters/SM_Bean_Female_01
-1003,Town_Female,Town_FemaleName,Town_FemaleDesc,100,6,SM_Bean_Town_Female_01,Prefabs/Characters/SM_Bean_Town_Female_01
+﻿uint32,string,string,string,uint32,uint32,string,string,int,int
+uid,character,nameAlias,descAlias,HP,atk,prefabFileName,prefabFilePath,poolDefaultCapacity,poolMaxSize
+-,-,Name,Desc,-,-,-,Prefabs/Characters/,-,-
+1000,Cop,CopName,CopDesc,100,10,SM_Bean_Cop_01,Prefabs/Characters/SM_Bean_Cop_01,5,20
+1001,Cowboy,CowboyName,CowboyDesc,100,8,SM_Bean_Cowboy_01,Prefabs/Characters/SM_Bean_Cowboy_01,5,20
+1002,Female,FemaleName,FemaleDesc,100,7,SM_Bean_Female_01,Prefabs/Characters/SM_Bean_Female_01,5,20
+1003,Town_Female,Town_FemaleName,Town_FemaleDesc,100,6,SM_Bean_Town_Female_01,Prefabs/Characters/SM_Bean_Town_Female_01,5,20
