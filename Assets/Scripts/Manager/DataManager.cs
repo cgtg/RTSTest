@@ -11,8 +11,6 @@ public class DataManager : SingletoneBase<DataManager>
     private string unitDataFilePath = "Assets/Resources/DataTable/UnitTable.csv";
     public Dictionary<int, UnitData> itemDataDictionary { get; private set; }
 
-    private UnitSO[] unitDatas;
-
     protected override void Init()
     {
         _pidStr = _pid.ToString();
@@ -20,7 +18,6 @@ public class DataManager : SingletoneBase<DataManager>
 
         // 데이터 관리
         ReadUnitData();
-
 
         // 프리팹 관리
     }
@@ -51,7 +48,6 @@ public class DataManager : SingletoneBase<DataManager>
     }
 
 }
-
 
 public class UnitData
 {

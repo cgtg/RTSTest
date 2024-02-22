@@ -39,7 +39,7 @@ public class UnitController : PoolAble
         NavMeshAgent navMeshAgent = GetComponent<NavMeshAgent>();
         float distance = Vector3.Distance(transform.position, destination);
         float timeToArrive = distance / navMeshAgent.speed;
-        Debug.Log(timeToArrive);
+        //Debug.Log(timeToArrive);
 
         yield return new WaitForSeconds(timeToArrive);
         navMeshAgent.SetDestination(transform.position);

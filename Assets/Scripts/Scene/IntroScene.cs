@@ -6,6 +6,7 @@ public class IntroScene : MonoBehaviour
     private void Awake()
     {
         _ = GameManager.Instance;
+        _ = DataManager.Instance;
     }
 
     private void Start()

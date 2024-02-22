@@ -19,8 +19,7 @@ public class PoolManager : SingletoneBase<PoolManager>
         Dictionary<int, UnitData> itemDataDictionary = DataManager.Instance.itemDataDictionary;
         foreach (int key in itemDataDictionary.Keys)
         {
-            Debug.Log(key);
-
+            //Debug.Log(key);
             IObjectPool<PoolAble> pool = new ObjectPool<PoolAble>(() =>
             CreatePooledItem(itemDataDictionary[key]), OnGetFromPool
                 , OnReleaseToPool, OnDestroyPoolObject
@@ -31,7 +30,6 @@ public class PoolManager : SingletoneBase<PoolManager>
                 Debug.LogFormat("{0} 이미 등록된 오브젝트입니다.", itemDataDictionary[key].uid);
                 return;
             }
-
             unitPoolDic.Add(itemDataDictionary[key].uid, pool);
         }
     }
