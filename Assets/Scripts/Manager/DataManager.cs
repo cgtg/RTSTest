@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
-using static Cinemachine.DocumentationSortingAttribute;
 
 public class DataManager : SingletoneBase<DataManager>
 {
