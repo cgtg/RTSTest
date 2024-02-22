@@ -41,8 +41,10 @@ public class DataManager : SingletoneBase<DataManager>
             int atk = int.Parse(fields[5]);
             string prefabFileName = fields[6];
             string prefabFilePath = fields[7];
+            int defaultCapacity = int.Parse(fields[8]);
+            int maxSize = int.Parse(fields[9]);
 
-            UnitData unitData = new UnitData(uid, character, nameAlias, descAlias, HP, atk, prefabFileName, prefabFilePath);
+            UnitData unitData = new UnitData(uid, character, nameAlias, descAlias, HP, atk, prefabFileName, prefabFilePath, defaultCapacity, maxSize);
 
             itemDataDictionary.Add(uid, unitData);
         }
@@ -61,8 +63,10 @@ public class UnitData
     public int atk;
     public string prefabFileName;
     public string prefabFilePath;
+    public int defaultCapacity;
+    public int maxSize;
 
-    public UnitData(int _uid, string _character, string _nameAlias, string _descAlias, int _HP, int _atk, string _prefabFileName, string _prefabFilePath)
+    public UnitData(int _uid, string _character, string _nameAlias, string _descAlias, int _HP, int _atk, string _prefabFileName, string _prefabFilePath, int _defaultCapacity, int _maxSize)
     {
         uid = _uid;
         character = _character;
@@ -72,5 +76,7 @@ public class UnitData
         atk = _atk;
         prefabFileName = _prefabFileName;
         prefabFilePath = _prefabFilePath;
+        defaultCapacity = _defaultCapacity;
+        maxSize = _maxSize;
     }
 }

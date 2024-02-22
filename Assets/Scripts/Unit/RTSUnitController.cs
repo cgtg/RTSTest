@@ -1,17 +1,27 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class RTSUnitController : MonoBehaviour
 {
     [SerializeField]
-    private UnitSpawner unitSpawner;
     private List<UnitController> selectedUnitList;              // 플레이어가 클릭 or 드래그로 선택한 유닛
-    public List<UnitController> UnitList { private set; get; }  // 맵에 존재하는 모든 유닛
+    public List<UnitController> UnitList; // 맵에 존재하는 모든 유닛
 
     private void Awake()
     {
         selectedUnitList = new List<UnitController>();
-        UnitList = unitSpawner.SpawnUnits();
+        UnitList = new List<UnitController>();
+        //UnitList = unitSpawner.SpawnUnits();
+        Init();
+    }
+
+    public void Init()
+    {
+        UnitList.AddRange(PoolManager.Instance.Respawn(1000, 5));
+        UnitList.AddRange(PoolManager.Instance.Respawn(1001, 5));
+        UnitList.AddRange(PoolManager.Instance.Respawn(1002, 5));
+        UnitList.AddRange(PoolManager.Instance.Respawn(1003, 5));
     }
 
     /// <summary>
@@ -100,4 +110,3 @@ public class RTSUnitController : MonoBehaviour
         selectedUnitList.Remove(newUnit);
     }
 }
-

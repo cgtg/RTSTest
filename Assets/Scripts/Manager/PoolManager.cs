@@ -1,70 +1,51 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Pool;
-
-[System.Serializable]
-public class ObjectInfo
-{
-    public string objectName;
-    public GameObject prefab;
-    public int defaultCapacity;
-    public int maxSize;
-
-
-}
+using UnityEngine.UIElements;
 
 
 public class PoolManager : SingletoneBase<PoolManager>
 {
-    private Dictionary<string, ObjectInfo> SODic = new Dictionary<string, ObjectInfo>();
+    private Dictionary<int, IObjectPool<PoolAble>> unitPoolDic = new Dictionary<int, IObjectPool<PoolAble>>();
 
-    private float repeatInterval = 10.0f;
-    private float spawnRadius = 10f;
-
-    private Dictionary<string, IObjectPool<PoolAble>> ojbectPoolDic = new Dictionary<string, IObjectPool<PoolAble>>();
-
+    private Vector2 minSize = new Vector2(-11, -11);
+    private Vector2 maxSize = new Vector2(11, 11);
 
     protected override void Init()
     {
         Dictionary<int, UnitData> itemDataDictionary = DataManager.Instance.itemDataDictionary;
-
         foreach (int key in itemDataDictionary.Keys)
         {
             Debug.Log(key);
 
+            IObjectPool<PoolAble> pool = new ObjectPool<PoolAble>(() =>
+            CreatePooledItem(itemDataDictionary[key]), OnGetFromPool
+                , OnReleaseToPool, OnDestroyPoolObject
+                , true, itemDataDictionary[key].defaultCapacity, itemDataDictionary[key].maxSize);
 
+            if (unitPoolDic.ContainsKey(itemDataDictionary[key].uid))
+            {
+                Debug.LogFormat("{0} 이미 등록된 오브젝트입니다.", itemDataDictionary[key].uid);
+                return;
+            }
 
-            //SODic.Add(key, )
+            unitPoolDic.Add(itemDataDictionary[key].uid, pool);
         }
-        
-        
-        
-        
-        //for (int idx = 0; idx < unit.Length; idx++)
-        //{
-        //    ObjectInfo tmpObjInfo = unit[idx];
-        //    IObjectPool<PoolAble> pool = new ObjectPool<PoolAble>(() =>
-        //    CreatePooledItem(tmpObjInfo), OnGetFromPool
-        //        , OnReleaseToPool, OnDestroyPoolObject
-        //        , true, unit[idx].defaultCapacity, unit[idx].maxSize);
-
-        //    if (ojbectPoolDic.ContainsKey(unit[idx].objectName))
-        //    {
-        //        Debug.LogFormat("{0} 이미 등록된 오브젝트입니다.", unit[idx].objectName);
-        //        return;
-        //    }
-
-        //    ojbectPoolDic.Add(unit[idx].objectName, pool);
-        //}
     }
 
     // 생성
-    private PoolAble CreatePooledItem(ObjectInfo objectInfos)
+    private PoolAble CreatePooledItem(UnitData unitData)
     {
-        PoolAble poolAble = Instantiate(objectInfos.prefab).GetComponent<PoolAble>();
-        poolAble.SetPool(ojbectPoolDic[objectInfos.objectName]);
-        return poolAble;
+        // 프리팹 불러오기
+        GameObject prefab = Resources.Load<GameObject>(unitData.prefabFilePath);
+
+        // 게임 오브젝트 생성해서 리턴
+        PoolAble poolable = Instantiate(prefab).GetComponent<PoolAble>();
+        poolable.SetPool(unitPoolDic[unitData.uid]);
+        return poolable;
     }
 
     // 대여
@@ -85,40 +66,45 @@ public class PoolManager : SingletoneBase<PoolManager>
         Destroy(poolObj.gameObject);
     }
 
-    public PoolAble GetPoolAble(string objectName)
+    public PoolAble GetPoolAble(int uid)
     {
-        if (ojbectPoolDic.ContainsKey(objectName) == false)
+        if (unitPoolDic.ContainsKey(uid) == false)
         {
-            Debug.LogFormat("{0} 오브젝트풀에 등록되지 않은 오브젝트입니다.", objectName);
+            Debug.LogFormat("{0} 오브젝트풀에 등록되지 않은 오브젝트입니다.", uid);
             return null;
         }
 
-        return ojbectPoolDic[objectName].Get();
+        return unitPoolDic[uid].Get();
     }
 
 
 
-    public void Respawn(Vector3 centerPos, string prefabNickName, int count)
+    // test
+
+    public List<UnitController> Respawn(int uid, int count)
     {
-        //for (int i = 0; i < count; i++)
-        //{
-        //    GameObject animal = unit[Random.Range(0, unit.Length)].prefab;
+        List<UnitController> unitList = new List<UnitController>(count);
 
-        //    // 랜덤 위치에서 가장 가까운 Navmesh위 유효 위치를 탐색
-        //    Vector3 randomPosition = Random.onUnitSphere * spawnRadius + centerPos;
-        //    randomPosition.y = 100f;
-        //    Ray ray = new Ray(randomPosition, Vector3.down);
-        //    RaycastHit hit;
-        //    NavMeshHit navhit;
+        for (int i = 0; i < count; i++)
+        {
+            Vector3 randomPosition = new Vector3(Random.Range(minSize.x, maxSize.x), 1, Random.Range(minSize.y, maxSize.y));
+            randomPosition.y = 100f;
+            Ray ray = new Ray(randomPosition, Vector3.down);
+            RaycastHit hit;
+            NavMeshHit navhit;
 
-        //    if (Physics.Raycast(ray, out hit, Mathf.Infinity))
-        //    {
-        //        if (NavMesh.SamplePosition(hit.point, out navhit, spawnRadius, NavMesh.AllAreas))
-        //        {
-        //            Instantiate(animal, navhit.position, Quaternion.identity);
-        //        }
-        //    }
-        //}
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+            {
+                if (NavMesh.SamplePosition(hit.point, out navhit, 10f, NavMesh.AllAreas))
+                {
+                    PoolAble clone = GetPoolAble(uid);
+                    clone.transform.position = navhit.position;
+                    unitList.Add(clone.GetComponent<UnitController>());
+                }
+            }
+        }
+
+        return unitList;
     }
 }
 
