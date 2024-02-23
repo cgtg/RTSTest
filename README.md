@@ -28,6 +28,14 @@ Visual Studio Community 2022
 ## 개발인원
 개인개발
 
+## 스크린샷
+![image](https://github.com/cgtg/RTSTest/assets/88172590/79bec9bf-0787-45ba-bd7b-da4dc264b505)
+
+![image](https://github.com/cgtg/RTSTest/assets/88172590/bccd3884-282b-4148-9b1f-1b214ec253bd)
+
+![image](https://github.com/cgtg/RTSTest/assets/88172590/539a941b-da39-4659-9be8-29e6f62cb494)
+
+
 ## 사용 에셋
 
 ### 캐릭터
@@ -35,11 +43,4 @@ https://assetstore.unity.com/packages/essentials/tutorial-projects/polygon-start
 
 ### 인트로 SkyBox
 https://assetstore.unity.com/packages/2d/textures-materials/milky-way-skybox-94001  
-
-## 스크린샷
-![image](https://github.com/cgtg/RTSTest/assets/88172590/79bec9bf-0787-45ba-bd7b-da4dc264b505)
-
-![image](https://github.com/cgtg/RTSTest/assets/88172590/bccd3884-282b-4148-9b1f-1b214ec253bd)
-
-![image](https://github.com/cgtg/RTSTest/assets/88172590/539a941b-da39-4659-9be8-29e6f62cb494)
 
